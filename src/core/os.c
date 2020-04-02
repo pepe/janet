@@ -789,7 +789,15 @@ static Janet os_symlink(int32_t argc, Janet *argv) {
 #endif
 }
 
-#undef j_symlink
+static Janet os_umask(int32_t argc, Janet *argv) {
+    janet_fixarity(argc, 1);
+#ifdef JANET_WINDOWS
+    janet_panicf("os/umask not supported on Windows");
+#else
+    int32_t mask = janet_getinteger(argv, 0);
+    return janet_wrap_integer(umask(mask));
+#endif
+}
 
 static Janet os_mkdir(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
