@@ -1445,7 +1445,7 @@ JanetListenerState *janet_listen(JanetStream *stream, JanetListener behavior, in
     int status;
     status = epoll_ctl(janet_vm.epoll, op, stream->handle, &ev);
     if (status == -1) {
-        if ((errno == EPERM) || (errno == EBADF)) {
+        if (errno == EPERM) {
             /* Couldn't add to event loop, so assume that it completes
              * synchronously. In that case, fire the completion
              * event manually, since this should be a read or write
